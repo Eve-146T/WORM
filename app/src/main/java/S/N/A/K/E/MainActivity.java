@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         private Paint paint;
         private static final float MAX_STROKE_WIDTH = 40f;
         private static final float MIN_STROKE_WIDTH = 5f;
-        private static final long FADE_DURATION = 1000; // 5 seconds
+        private static final long FADE_DURATION = 2000; // 5 seconds
 
         public DrawingView(Context context) {
             super(context);
