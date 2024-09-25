@@ -26,6 +26,14 @@ src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true">](f
 src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true)
 [<img width=200 alt="Screenshot 4"
 src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true)
+[<img width=200 alt="Screenshot 5"
+src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true)
+[<img width=200 alt="Screenshot 6"
+src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true)
+[<img width=200 alt="Screenshot 7"
+src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/7.png?raw=true)
+[<img width=200 alt="Screenshot 8"
+src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true">](fastlane/metadata/android/en-US/images/phoneScreenshots/8.png?raw=true)
 
 
 ## License
