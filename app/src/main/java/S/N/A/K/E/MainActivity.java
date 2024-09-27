@@ -47,16 +47,16 @@ public class MainActivity extends AppCompatActivity {
 
     private class DrawingView extends View {
         private Map<Integer, SnakePath> activePaths;
-        private List<SnakePath> completedPaths;
+        private List<SnakePath> allPaths; // New list to maintain all paths in order
         private Paint paint;
         private static final float MAX_STROKE_WIDTH = 40f;
         private static final float MIN_STROKE_WIDTH = 5f;
-        private static final long FADE_DURATION = 2000; // 5 seconds
+        private static final long FADE_DURATION = 2000; // 2 seconds
 
         public DrawingView(Context context) {
             super(context);
             activePaths = new HashMap<>();
-            completedPaths = new ArrayList<>();
+            allPaths = new ArrayList<>(); // Initialize the new list
             paint = new Paint();
             paint.setAntiAlias(true);
             paint.setStyle(Paint.Style.STROKE);
@@ -68,21 +68,21 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             long currentTime = System.currentTimeMillis();
 
-            for (SnakePath path : activePaths.values()) {
-                path.draw(canvas, paint, currentTime, true);
-            }
-
-            Iterator<SnakePath> iterator = completedPaths.iterator();
+            // Draw all paths in the order they were created
+            Iterator<SnakePath> iterator = allPaths.iterator();
             while (iterator.hasNext()) {
                 SnakePath path = iterator.next();
-                if (currentTime - path.getStartTime() > FADE_DURATION && path.getPoints().size() > 1) {
+                boolean isActive = activePaths.containsValue(path);
+
+                if (!isActive && currentTime - path.getStartTime() > FADE_DURATION && path.getPoints().size() > 1) {
                     path.removeOldestPoint();
                     if (path.getPoints().isEmpty()) {
                         iterator.remove();
                         continue;
                     }
                 }
-                path.draw(canvas, paint, currentTime, false);
+
+                path.draw(canvas, paint, currentTime, isActive);
             }
 
             invalidate();
@@ -97,15 +97,15 @@ public class MainActivity extends AppCompatActivity {
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN:
-                    // Only create a new path if one doesn't already exist for this pointer
                     if (!activePaths.containsKey(pointerId)) {
                         float x = event.getX(pointerIndex);
                         float y = event.getY(pointerIndex);
-                        activePaths.put(pointerId, new SnakePath(x, y));
+                        SnakePath newPath = new SnakePath(x, y);
+                        activePaths.put(pointerId, newPath);
+                        allPaths.add(newPath); // Add new path to allPaths
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    // Handle all pointers
                     for (int i = 0; i < event.getPointerCount(); i++) {
                         int id = event.getPointerId(i);
                         SnakePath path = activePaths.get(id);
@@ -117,10 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_POINTER_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    SnakePath path = activePaths.remove(pointerId);
-                    if (path != null) {
-                        completedPaths.add(path);
-                    }
+                    activePaths.remove(pointerId);
                     break;
             }
 
@@ -168,7 +165,8 @@ public class MainActivity extends AppCompatActivity {
                 float ageFactor = 1f - (float) pointAge / DrawingView.FADE_DURATION;
                 ageFactor = Math.max(0f, Math.min(1f, ageFactor));
 
-                float positionFactor = isActive ? (float)i / points.size() : ageFactor;
+                // Use the same width calculation for both active and completed paths
+                float positionFactor = (float)i / points.size();
                 float strokeWidth = DrawingView.MIN_STROKE_WIDTH + (DrawingView.MAX_STROKE_WIDTH - DrawingView.MIN_STROKE_WIDTH) * positionFactor;
 
                 paint.setColor(Color.argb((int) (255 * ageFactor), Color.red(color), Color.green(color), Color.blue(color)));

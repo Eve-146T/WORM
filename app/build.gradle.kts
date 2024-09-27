@@ -10,8 +10,8 @@ android {
         applicationId = "S.N.A.K.E"
         minSdk = 24
         targetSdk = 34
-        versionCode = 999999
-        versionName = "999999.9"
+        versionCode = 1000000
+        versionName = "1000000.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -25,6 +25,13 @@ android {
             )
         }
     }
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
